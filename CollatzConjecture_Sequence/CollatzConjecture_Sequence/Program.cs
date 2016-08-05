@@ -136,9 +136,50 @@ namespace CollatzConjecture_Sequence
                 targetGen = parseNumber(input);
                 if(isNumberValid(targetGen))
                 {
-
+                    //start calculating the collatz number for each number up till the ulong maximum
+                    //until a result in generations matches the targetGen
+                    Console.WriteLine("Calculating... This may take a while.");
+                    ulong result = 0;
+                    if(bruteForceFindGen(targetGen, out result))
+                    {
+                        Console.WriteLine("The number " + result + " takes " + targetGen + " generations to reach 1.");
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Couldn't find a number that matches " + targetGen + " generations.");
+                        Console.ReadLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("ERROR - Invalid input.");
+                    Console.ReadLine();
                 }
             }
+            else
+            {
+                Console.WriteLine("ERROR - Invalid input.");
+                Console.ReadLine();
+            }
+        }
+
+        private static bool bruteForceFindGen(ulong target, out ulong result)
+        {
+            ulong gen = 0;
+            ulong high = 0;
+            for(ulong i = 2; i < UInt64.MaxValue; i++)
+            {
+                gen = performCollatzConjecture(i, out high);
+                if(gen == target)
+                {
+                    result = i;
+                    return true;
+                }
+            }
+
+            result = 0;
+            return false;
         }
     }
 }
