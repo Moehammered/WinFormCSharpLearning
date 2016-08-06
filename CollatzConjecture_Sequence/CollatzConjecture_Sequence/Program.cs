@@ -23,11 +23,22 @@ namespace CollatzConjecture_Sequence
             string input = "";
             while(input.ToLower() != "q")
             {
-                input = readConsole(startMsg);
+                if (args.Length > 0)
+                    input = "n";
+                else
+                    input = readConsole(startMsg);
                 switch (input.ToLower())
                 {
                     case "n":
-                        calculateCollatz();
+                        if (args.Length > 0)
+                        {
+                            //pass the argument to the function
+                            calculateCollatz(args[0]);
+                            //prep the input so it will quit the application after running via command line args
+                            input = "q";
+                        }
+                        else
+                            calculateCollatz();
                         break;
                     case "g":
                         //find number from generations
@@ -100,10 +111,10 @@ namespace CollatzConjecture_Sequence
             return generations;
         }
 
-        private static void calculateCollatz()
+        private static void calculateCollatz(string arg = "")
         {
             ulong gens = 0, high = 0;
-            string input = readConsole("Please enter a positive integer(whole number):");
+            string input = (arg != String.Empty) ? arg : readConsole("Please enter a positive integer(whole number):");
             if (isInputValid(input))
             {
                 ulong number = parseNumber(input);
