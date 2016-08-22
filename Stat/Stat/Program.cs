@@ -9,39 +9,19 @@ namespace Stat
     {
         static void Main(string[] args)
         {
-            double sdv = Stdev(args[0]);
-            Console.WriteLine("Standard deviation of array = " + sdv);
-        }
-
-        static double Stdev(string filepath)
-        {
-            ArrayList array = new ArrayList();
-            string line;
-            double value, total = 0, variance = 0, mean;
-
-            // read the data from the file into array
-            StreamReader fin = new StreamReader(filepath);
-            while (!fin.EndOfStream)
+            if (args.Length > 0)
             {
-                line = fin.ReadLine();
-                value = double.Parse(line);
-                array.Add(value);
+                ArrayList array = DataFileReader.LoadDataFile(args[0]);
+                if (array.Count != 0)
+                {
+                    double sdv = Stats.StdDev(array);
+                    Console.WriteLine("Standard deviation of array = " + sdv);
+                }
+                else
+                    Console.WriteLine("Invalid data set given. No data found.");
             }
-
-            // calculate the mean of the data in array
-            foreach (double x in array) total += x;
-            mean = total / array.Count;
-            Console.WriteLine("Mean: " + mean);
-            // calculate the variance of array
-            foreach (double x in array)
-            {
-                // complete code for variance
-                variance += Math.Abs(mean - x);
-            }
-            variance /= (array.Count);
-
-            // return the standard deviation
-            return Math.Sqrt(variance);
+            else
+                Console.WriteLine("No arguments found. Please give a file path to a data set of numbers.");
         }
     }
 }
