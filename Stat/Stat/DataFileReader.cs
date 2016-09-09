@@ -23,10 +23,12 @@ namespace Stat
                     line = fin.ReadLine();
                     if (double.TryParse(line, out value))
                         array.Add(value);
+                    else
+                        throw new Exception("Invalid double in " + path);
                 }
             } catch (FileNotFoundException exc)
             {
-                Console.WriteLine("Invalid file path or name given. File Not Found!");
+                throw new FileNotFoundException("Unable to find specified file", path);
             }
 
             return array;

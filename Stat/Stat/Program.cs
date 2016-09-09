@@ -9,19 +9,30 @@ namespace Stat
     {
         static void Main(string[] args)
         {
-            if (args.Length > 0)
+            try
             {
-                ArrayList array = DataFileReader.LoadDataFile(args[0]);
-                if (array.Count != 0)
+                if (args.Length > 0)
                 {
+                    ArrayList array = DataFileReader.LoadDataFile(args[0]);
                     double sdv = Stats.StdDev(array);
                     Console.WriteLine("Standard deviation of array = " + sdv);
                 }
                 else
-                    Console.WriteLine("Invalid data set given. No data found.");
+                    throw new ArgumentException("Must have exactly 1 argument for file to be read.");
             }
-            else
-                Console.WriteLine("No arguments found. Please give a file path to a data set of numbers.");
+            catch (FileNotFoundException fnfex)
+            {
+                Console.WriteLine(fnfex.Message + " - " + fnfex.FileName);
+            }
+            catch(ArgumentException aexc)
+            {
+                Console.WriteLine(aexc.Message);
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine("Stat program failed with the following error.");
+                Console.WriteLine(exc.Message);
+            }
         }
     }
 }
