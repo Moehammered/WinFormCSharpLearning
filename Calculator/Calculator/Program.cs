@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Calculator
 {
@@ -15,14 +12,16 @@ namespace Calculator
                 if(args.Length == 1)
                 {
                     Console.WriteLine("Arg 0: " + args[0]);
-                    List<string> pieces = findExpressions(args[0]);
+                    Parser calcParser = new Parser(args[0]);
+                    calcParser.parseExpression();
+                   /* List<string> pieces = findExpressions(args[0]);
                     Console.WriteLine("Pieces found.");
                     foreach(string p in pieces)
                     {
                         Console.Write("[" + p + "]");
                     }
                     Console.WriteLine();
-                    Console.WriteLine(evaluateExpression(pieces));
+                    Console.WriteLine(evaluateExpression(pieces));*/
                 }
                 else
                 {
