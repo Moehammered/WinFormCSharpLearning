@@ -14,6 +14,7 @@ namespace Calculator
                     Console.WriteLine("Arg 0: " + args[0]);
                     Parser calcParser = new Parser(args[0]);
                     calcParser.parseExpression();
+                    Console.WriteLine("Result: " + calcParser.evaluate());
                    /* List<string> pieces = findExpressions(args[0]);
                     Console.WriteLine("Pieces found.");
                     foreach(string p in pieces)

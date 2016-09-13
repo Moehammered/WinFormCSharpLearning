@@ -8,6 +8,7 @@ namespace Calculator
 {
     public enum Operation
     {
+        NONE,
         ADDITION,
         SUBTRACTION,
         MULTIPLICATION,
@@ -41,7 +42,12 @@ namespace Calculator
                 default:
                     return -1; //error somehow?
             }
-            
+        }
+
+        public override string ToString()
+        {
+            string disp = "(" + left + " " + op + " " + right + ")";
+            return disp;
         }
     }
 }
