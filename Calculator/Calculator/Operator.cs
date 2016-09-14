@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Calculator
 {
@@ -12,9 +8,16 @@ namespace Calculator
         ADDITION,
         SUBTRACTION,
         MULTIPLICATION,
-        DIVISION
+        DIVISION,
+        MODULUS
     }
 
+    /// <summary>
+    /// An Operator class designed to evaluate arithmetic expressions.
+    /// It does so by evaluting both of it's operand expressions before evaluting itself.
+    /// The operations are checked for operation errors/exceptions.
+    /// Information for this was found at: https://msdn.microsoft.com/en-us/library/74b4xzyw.aspx
+    /// </summary>
     class Operator : IExpression
     {
         private IExpression left, right;
@@ -29,19 +32,43 @@ namespace Calculator
 
         public int evaluate()
         {
-            switch(op)
+            int result = 0;
+            try
             {
-                case Operation.ADDITION:
-                    return left.evaluate() + right.evaluate();
-                case Operation.SUBTRACTION:
-                    return left.evaluate() - right.evaluate();
-                case Operation.MULTIPLICATION:
-                    return left.evaluate() * right.evaluate();
-                case Operation.DIVISION:
-                    return left.evaluate() / right.evaluate();
-                default:
-                    return -1; //error somehow?
+                checked
+                {
+                    switch (op)
+                    {
+                        case Operation.ADDITION:
+                            result = left.evaluate() + right.evaluate();
+                            break;
+                        case Operation.SUBTRACTION:
+                            result = left.evaluate() - right.evaluate();
+                            break;
+                        case Operation.MULTIPLICATION:
+                            result = left.evaluate() * right.evaluate();
+                            break;
+                        case Operation.DIVISION:
+                            result = left.evaluate() / right.evaluate();
+                            break;
+                        case Operation.MODULUS:
+                            result = left.evaluate() % right.evaluate();
+                            break;
+                        default:
+                            throw new System.Exception("No operator found for operation.");
+                    }
+                }
             }
+            catch (DivideByZeroException divExc)
+            {
+                throw new DivideByZeroException("Divide by zero", divExc);
+            }
+            catch(OverflowException ofExc)
+            {
+                throw new OverflowException("Out of range", ofExc);
+            }
+
+            return result;
         }
 
         public override string ToString()

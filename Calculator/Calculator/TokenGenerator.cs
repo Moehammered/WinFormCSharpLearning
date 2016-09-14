@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Calculator
 {
@@ -54,7 +52,7 @@ namespace Calculator
                 tokens = foundTokens.ToArray();
             }
             else
-                throw new Exception("Invalid Input");
+                throw new Exception("Invalid Input. Expected operand, found '" + source[position] + "'");
         }
 
         private void readTrailingNumbers(ref int position, ref string token, ref string source)
@@ -79,7 +77,7 @@ namespace Calculator
         public bool isOperator(string token)
         {
             return (token == "+" || token == "-"
-                || token == "*" || token == "/");
+                || token == "*" || token == "/" || token == "%");
         }
     }
 }
