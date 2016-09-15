@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="Expression.cs" />
     <Compile Include="Number.cs" />

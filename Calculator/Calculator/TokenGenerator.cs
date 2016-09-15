@@ -5,10 +5,10 @@ using System.Linq;
 namespace Calculator
 {
     /// <summary>
-    /// This class will create expression tokens from original source string (e.g. 2+5*-3 -> [2][+][5][*][-3])
-    /// No validation is handled in the syntax at this point, it simply creates a token for each piece of data
-    /// The only exception is the very first token generated, the starting symbol is checked for validation
-    /// Token separation is based on operator symbols and last known token
+    /// Creates expression tokens from original source string (e.g. 2+5*-3 -> [2][+][5][*][-3]).
+    /// Validation is not handled here, it simply creates a token for each piece of data.
+    /// The only exception -> the starting symbol is checked for validation.
+    /// Token separation is based on operator symbols and last known token.
     /// </summary>
     class TokenGenerator
     {
@@ -27,32 +27,35 @@ namespace Calculator
 
         public void createTokens()
         {
-            //filter through source string now
+            if (isValidStart(source[0]))
+            {
+                tokens = findTokens();
+            }
+            else
+                throw new Exception("Invalid Input. Expected operand, found '" + source[0] + "'");
+        }
+
+        private string[] findTokens()
+        {
             List<string> foundTokens = new List<string>();
             int position = 0;
 
-            if (isValidStart(source[position]))
+            while (position < source.Length)
             {
-                while (position < source.Length)
+                string token = "" + source[position];
+                position++; //move over to check next character
+
+                //Look for numbers only if we've stored an operator previously or just started
+                if (foundTokens.Count > 0 && isOperator(foundTokens.Last()) ||
+                    foundTokens.Count == 0)
                 {
-                    string token = "" + source[position];
-                    position++; //move over to check next character
-
-                    //Read the stream forward if we have stored an operator token previously 
-                    //or if we've just started
-                    if (foundTokens.Count > 0 && isOperator(foundTokens.Last()) ||
-                        foundTokens.Count == 0)
-                    {
-                        readTrailingNumbers(ref position, ref token, ref source);
-                    }
-
-                    foundTokens.Add(token);
+                    readTrailingNumbers(ref position, ref token, ref source);
                 }
 
-                tokens = foundTokens.ToArray();
+                foundTokens.Add(token);
             }
-            else
-                throw new Exception("Invalid Input. Expected operand, found '" + source[position] + "'");
+
+            return foundTokens.ToArray();
         }
 
         private void readTrailingNumbers(ref int position, ref string token, ref string source)
