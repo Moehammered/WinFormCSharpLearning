@@ -65,7 +65,7 @@ namespace Calculator
             }
             catch(OverflowException ofExc)
             {
-                throw new OverflowException("Out of range", ofExc);
+                throw new OverflowException("Out of Range", ofExc);
             }
 
             return result;

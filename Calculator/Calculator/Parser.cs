@@ -24,10 +24,9 @@ namespace Calculator
             {
                 expressionBuilder = new ExpressionBuilder(tokenizer.Tokens);
                 parsedExpression = expressionBuilder.ExpressionTree;
-                Console.WriteLine(parsedExpression);
             }
             else
-                throw new Exception("Invalid Input");
+                throw new Exception("Invalid Input.");
         }
 
         public int evaluate()

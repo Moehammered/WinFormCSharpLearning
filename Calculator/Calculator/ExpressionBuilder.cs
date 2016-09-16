@@ -5,7 +5,9 @@ namespace Calculator
     /// <summary>
     /// Responsible for the construction of the arithmetic expression.
     /// It takes in the tokens of an expression and converts them into a tree.
-    /// This tree can be evaluated to produce the result of the expression.
+    /// The tokens are read from right to left, so that the left most side of the expression is
+    /// in the leaf of the tree, and the right most in the root of the tree. This allows the
+    /// expression to be evaluated from left to right.
     /// </summary>
     class ExpressionBuilder
     {
@@ -67,27 +69,51 @@ namespace Calculator
                 case Operation.MULTIPLICATION:
                 case Operation.DIVISION:
                 case Operation.MODULUS:
-                    found = parseRightExpressions(position);
+                    found = readAhead(position);
                     break;
                 default: 
                     //validateSyntax should've caught this already, here to be safe
-                    throw new Exception("Invalid Input. Found '" + currToken + "', expected operator.");
+                    throw new Exception("Invalid Input. Found '" + currToken + 
+                        "', expected operator.");
             }
 
             return found;
         }
 
-        private IExpression readRight(int startPoint)
+        private IExpression readAhead(int position)
+        {
+            IExpression found = null;
+            IExpression left = null;
+            IExpression right = null;
+
+            int nextPosition = findNextPlusMinus(position);
+            //find all multiply, divide, and modulus operations
+            right = parsePriorityExpressions(position);
+            //did we find a plus or minus operator when reading ahead of the expression?
+            if (nextPosition > 0)
+            {
+                //read on past the found operator, finding it's left operands
+                left = readLeft(nextPosition - OPERATOR_OFFSET);
+                //build the add or subtract operation we found at nextPosition
+                string currToken = expressionTokens[nextPosition];
+                Operation type = getOperationType(currToken);
+                found = new Operator(left, right, type);
+            }
+            else //Return all the multiply and divide operations only
+                found = right;
+
+            return found;
+        }
+        
+        private IExpression parsePriorityExpressions(int startPoint)
         {
             IExpression found = null;
             IExpression left = null;
             IExpression right = null;
 
             string currToken = "";
-            if (startPoint < expressionTokens.Length)
+            if (startPoint > 0)
                 currToken = expressionTokens[startPoint];
-            else
-                currToken = expressionTokens[startPoint - OPERAND_OFFSET];
 
             Operation type = getOperationType(currToken);
             switch (type)
@@ -95,41 +121,16 @@ namespace Calculator
                 case Operation.MULTIPLICATION:
                 case Operation.DIVISION:
                 case Operation.MODULUS:
-                    string leftToken = expressionTokens[startPoint - OPERAND_OFFSET];
-                    left = new Number(parseNumber(leftToken));
-                    right = readRight(startPoint + OPERATOR_OFFSET);
+                    string rightToken = expressionTokens[startPoint + OPERAND_OFFSET];
+                    right = new Number(parseNumber(rightToken));
+                    left = parsePriorityExpressions(startPoint - OPERATOR_OFFSET);
                     found = new Operator(left, right, type);
                     break;
                 default:
-                    string rightToken = expressionTokens[startPoint - OPERAND_OFFSET];
-                    found = new Number(parseNumber(rightToken));
+                    string leftToken = expressionTokens[startPoint + OPERAND_OFFSET];
+                    found = new Number(parseNumber(leftToken));
                     break;
             }
-
-            return found;
-        }
-
-        private IExpression parseRightExpressions(int position)
-        {
-            IExpression found = null;
-            IExpression left = null;
-            IExpression right = null;
-            
-            int nextPorM = findNextPlusMinus(position);
-            //find all multiply and divide operations to the right
-            right = readRight(nextPorM + OPERATOR_OFFSET);
-            //did we find a plus or minus operator when moving on to the left of the expression?
-            if (nextPorM > 0)
-            {
-                //read on past the found operator, finding it's left operands
-                left = readLeft(nextPorM - OPERATOR_OFFSET);
-                //build the add or subtract operation we found now
-                string currToken = expressionTokens[nextPorM];
-                Operation type = getOperationType(currToken);
-                found = new Operator(left, right, type);
-            }
-            else //Return all the multiply and divide operations only
-                found = right;
 
             return found;
         }
