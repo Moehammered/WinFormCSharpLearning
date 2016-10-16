@@ -12,22 +12,23 @@ namespace TextForm
 {
     public partial class Form1 : Form
     {
+        private CalculatorUI uiBuilder;
+
         public Form1()
         {
             InitializeComponent();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            TextField.Text = "1";
-        }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
+            uiBuilder = new CalculatorUI(numeracyPanel, opPanel);
+            uiBuilder.initialiseNumberPanel();
+            uiBuilder.TextField = TextField;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+        }
+
+        private void TextField_TextChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("Current:{0}\tLast:{1}", TextField.Text, TextField.Text.Last());
         }
     }
 }
