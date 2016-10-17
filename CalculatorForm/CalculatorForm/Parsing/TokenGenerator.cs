@@ -74,13 +74,14 @@ namespace CalculatorForm.Parsing
 
         private bool isNumber(char character)
         {
-            return (character >= '0' && character <= '9');
+            return (character >= '0' && character <= '9' ||
+                character == '.');
         }
 
         public bool isOperator(string token)
         {
-            return (token == "+" || token == "-" || token == "x"
-                || token == "*" || token == "/" || token == "%");
+            return (token == "+" || token == "-" || token == "x" ||
+                token == "^" || token == "*" || token == "/" || token == "%");
         }
     }
 }

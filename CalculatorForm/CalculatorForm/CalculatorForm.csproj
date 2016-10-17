@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{02D972A9-BB97-4A2F-8CFC-405639BC1A28}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CalculatorForm</RootNamespace>
     <AssemblyName>CalculatorForm</AssemblyName>
@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Parsing\Calculator.cs" />
     <Compile Include="Parsing\Expression.cs" />
     <Compile Include="Parsing\ExpressionBuilder.cs" />
     <Compile Include="Parsing\Number.cs" />

@@ -2,14 +2,14 @@
 {
     class Number : IExpression
     {
-        private int value;
+        private double value;
         
-        public Number(int value)
+        public Number(double value)
         {
             this.value = value;
         }
 
-        public int evaluate()
+        public double evaluate()
         {
             return value;
         }

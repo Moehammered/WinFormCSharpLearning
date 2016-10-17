@@ -24,12 +24,13 @@ namespace CalculatorForm.Parsing
             {
                 expressionBuilder = new ExpressionBuilder(tokenizer.Tokens);
                 parsedExpression = expressionBuilder.ExpressionTree;
+                Console.WriteLine(parsedExpression);
             }
             else
                 throw new Exception("Invalid Input.");
         }
 
-        public int evaluate()
+        public double evaluate()
         {
             return parsedExpression.evaluate();
         }

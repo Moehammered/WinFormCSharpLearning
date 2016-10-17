@@ -9,7 +9,8 @@ namespace CalculatorForm.Parsing
         SUBTRACTION,
         MULTIPLICATION,
         DIVISION,
-        MODULUS
+        MODULUS,
+        EXPONENT
     }
 
     /// <summary>
@@ -30,9 +31,9 @@ namespace CalculatorForm.Parsing
             this.op = op;
         }
 
-        public int evaluate()
+        public double evaluate()
         {
-            int result = 0;
+            double result = 0;
             try
             {
                 checked
@@ -53,6 +54,9 @@ namespace CalculatorForm.Parsing
                             break;
                         case Operation.MODULUS:
                             result = left.evaluate() % right.evaluate();
+                            break;
+                        case Operation.EXPONENT:
+                            result = Math.Pow(left.evaluate(), right.evaluate());
                             break;
                         default:
                             throw new System.Exception("No operator found for operation.");

@@ -8,7 +8,6 @@ namespace CalculatorForm
     {
         private PanelButtons numberButtons, operationButtons;
         private RichTextBox textField;
-        private Calculator calculator;
         private bool calculated = false;
 
         private const int NUMBER_BTN_COUNT = 11, OP_BTN_COUNT = 9;
@@ -21,7 +20,6 @@ namespace CalculatorForm
             OP_BTN_SYMB = new string[]{
                 "CE", "CL", "+", "x", "-", "/", "%", "^", "="
             };
-            calculator = new Calculator();
         }
         
         public RichTextBox TextField
@@ -75,7 +73,7 @@ namespace CalculatorForm
             switch(text)
             {
                 case "CE":
-                    if(textField.Text.Length > 1)
+                    if(textField.Text.Length > 1 && !calculated)
                         textField.Text = textField.Text.Substring(0, textField.Text.Length - 1);
                     else
                         textField.Text = "0";
@@ -86,28 +84,47 @@ namespace CalculatorForm
                     calculated = false;
                     break;
                 case "=":
-                    textField.Text = "" + calculator.evaluate(textField.Text);
+                    textField.Text = "" + evaluate(textField.Text);
                     calculated = true;
                     break;
                 default:
-                    if(textField.Text.Length == 1 && textField.Text == "0")
-                    {
-                        if (text == ".")
-                            textField.Text += text;
-                        else
-                            textField.Text = text;
-                    }
-                    else if(textField.Text.Length > 1 && calculated)
-                    {
-                        if (text[0] >= '0' && text[0] <= '9')
-                            textField.Text = text;
-                        else
-                            textField.Text += text;
-                    }
-                    else
-                        textField.Text += text;
+                    appendInput(text);
                     calculated = false;
                     break;
+            }
+        }
+
+        private void appendInput(string input)
+        {
+            if (textField.Text.Length == 1 && textField.Text == "0")
+            {
+                if (input == ".")
+                    textField.Text += input;
+                else
+                    textField.Text = input;
+            }
+            else if (textField.Text.Length > 1 && calculated)
+            {
+                if (input[0] >= '0' && input[0] <= '9' || input[0] == '.')
+                    textField.Text = input;
+                else
+                    textField.Text += input;
+            }
+            else
+                textField.Text += input;
+        }
+
+        private string evaluate(string expression)
+        {
+            Parser calcParser = new Parser(expression);
+            try
+            {
+                calcParser.parseExpression();
+                return "" + calcParser.evaluate();
+            }
+            catch (Exception exc)
+            {
+                return exc.Message;
             }
         }
     }

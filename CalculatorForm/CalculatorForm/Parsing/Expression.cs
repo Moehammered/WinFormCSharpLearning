@@ -2,6 +2,6 @@
 {
     public interface IExpression
     {
-        int evaluate();
+        double evaluate();
     }
 }

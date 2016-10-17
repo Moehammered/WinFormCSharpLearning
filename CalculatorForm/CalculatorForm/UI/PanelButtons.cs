@@ -51,7 +51,7 @@ namespace CalculatorForm
                     if (index >= buttons.Length)
                         return;
 
-                    btnPos.X = x * btnSize.Width;
+                    btnPos.X = (columns - 1 - x) * btnSize.Width;
                     buttons[index].Location = btnPos;
                     buttons[index].Size = btnSize;
                 }
