@@ -73,13 +73,10 @@ namespace CalculatorForm
             switch(text)
             {
                 case "CE":
-                    if(textField.Text.Length > 1 && !calculated)
-                        textField.Text = textField.Text.Substring(0, textField.Text.Length - 1);
-                    else
-                        textField.Text = "0";
+                    clearDigit();
                     calculated = false;
                     break;
-                case "CL":
+                case "CL": //reset input field
                     textField.Text = "0";
                     calculated = false;
                     break;
@@ -92,6 +89,17 @@ namespace CalculatorForm
                     calculated = false;
                     break;
             }
+        }
+
+        private void clearDigit()
+        {
+            if (textField.Text.Length > 1 && !calculated)
+            {
+                string originalText = textField.Text;
+                textField.Text = originalText.Substring(0, originalText.Length - 1);
+            }
+            else
+                textField.Text = "0";
         }
 
         private void appendInput(string input)

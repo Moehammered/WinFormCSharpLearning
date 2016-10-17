@@ -47,7 +47,6 @@
             this.TextField.TabIndex = 1;
             this.TextField.Text = "0";
             this.TextField.WordWrap = false;
-            this.TextField.TextChanged += new System.EventHandler(this.TextField_TextChanged);
             // 
             // numeracyPanel
             // 
@@ -84,7 +83,6 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Calculator";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }

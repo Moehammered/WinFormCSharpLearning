@@ -158,13 +158,11 @@ namespace CalculatorForm.Parsing
                         //parsePriorityExpression towards left side of this operator
                         left = parsePriorityExpressions(nextOP - OPERATOR_OFFSET);
                         found = new Operator(left, right, type);
-                        //build operator here
                         break;
                     default:
                         found = right;
                         break;
                 }
-                //we steal the left operand and continue execution
             }
             else
                 return right;
@@ -188,27 +186,14 @@ namespace CalculatorForm.Parsing
 
             switch(type)
             {
-                /*case Operation.ADDITION:
-                case Operation.SUBTRACTION:
-                    //just want to steal the right operand from the addition
-                    break;*/
-                case Operation.MULTIPLICATION:
-                case Operation.DIVISION:
-                case Operation.MODULUS:
-                    //steal the right operand from the multiplication
-                    found = new Number(parseNumber(rightToken));
-                    //construct the operator and continue execution to the left of the found operator
-                    break;
                 case Operation.EXPONENT:
                     //take the right operand, parse exponent to the left
-                    /*rightToken = expressionTokens[startPosition + OPERAND_OFFSET];*/
                     right = new Number(parseNumber(rightToken));
                     left = parseExponent(startPosition - OPERATOR_OFFSET);
                     found = new Operator(left, right, type);
                     break;
                 default:
-                    //hit a number
-                    /*rightToken = expressionTokens[startPosition + OPERAND_OFFSET];*/
+                    //hit a number or lower precedent operator
                     found = new Number(parseNumber(rightToken));
                     break;
             }

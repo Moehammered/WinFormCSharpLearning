@@ -59,7 +59,7 @@ namespace CalculatorForm.Parsing
                             result = Math.Pow(left.evaluate(), right.evaluate());
                             break;
                         default:
-                            throw new System.Exception("No operator found for operation.");
+                            throw new Exception("No operator found for operation.");
                     }
                 }
             }
